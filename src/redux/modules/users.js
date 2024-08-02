@@ -11,7 +11,7 @@ const LOGOUT = "users/LOGOUT";
 
 export const loadUser = () => async (dispatch) => {
   try {
-    const res = await api.get("http://localhost:5000/api/users");
+    const res = await api.get("/users");
     dispatch({
       type: USER_LOADED,
       payload: res.data,
@@ -28,7 +28,7 @@ export function register(formData) {
     try {
       //call API /users/register
       const res = await api.post(
-        "http://localhost:5000/api/users/register",
+        "users/register",
         formData
       );
       dispatch({
@@ -55,7 +55,7 @@ export function register(formData) {
 export function login(email, password) {
   return async function loginThunk(dispatch) {
     try {
-      const res = await api.post("http://localhost:5000/api/users/login", {
+      const res = await api.post("users/login", {
         email,
         password,
         
