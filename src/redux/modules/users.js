@@ -1,17 +1,17 @@
 import { api, setAuthToken } from "../../utils";
 import { showAlertMessage } from "./alerts";
 
-const REGISTER_SUCCESS = "users/REGISTER_SUCCESS";
-const REGISTER_FAIL = "users/REGISTER_FAIL";
-const USER_LOADED = "users/USER_LOADED";
-const USER_ERROR = "users/USER_ERROR";
-const LOGIN_SUCCESS = "users/LOGIN_SUCCESS";
-const LOGIN_FAIL = "users/LOGIN_FAIL";
-const LOGOUT = "users/LOGOUT";
+const REGISTER_SUCCESS = "/users/REGISTER_SUCCESS";
+const REGISTER_FAIL = "/users/REGISTER_FAIL";
+const USER_LOADED = "/users/USER_LOADED";
+const USER_ERROR = "/users/USER_ERROR";
+const LOGIN_SUCCESS = "/users/LOGIN_SUCCESS";
+const LOGIN_FAIL = "/users/LOGIN_FAIL";
+const LOGOUT = "/users/LOGOUT";
 
 export const loadUser = () => async (dispatch) => {
   try {
-    const res = await api.get("users");
+    const res = await api.get("/users");
     dispatch({
       type: USER_LOADED,
       payload: res.data,
@@ -28,7 +28,7 @@ export function register(formData) {
     try {
       //call API /users/register
       const res = await api.post(
-        "users/register",
+        "/users/register",
         formData
       );
       dispatch({
@@ -55,7 +55,7 @@ export function register(formData) {
 export function login(email, password) {
   return async function loginThunk(dispatch) {
     try {
-      const res = await api.post("users/login", {
+      const res = await api.post("/users/login", {
         email,
         password,
         
