@@ -1,0 +1,76 @@
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { addLike, removeLike, deletePost } from "../../redux/modules/posts";
+import { formatDate, getProfileImage } from "../../utils";
+
+const PostItem = ({
+  addLike,
+  removeLike,
+  deletePost,
+  users,
+  post: { _id, text, name, user, likes, comments, date},showActions
+}) => {
+  return (
+    <div className="post-card">
+      <div className="row">
+        <div className="column">
+          <img className="profile" alt="" src={getProfileImage(user)} />
+          <p>{name}</p>
+        </div>
+        <div
+          className="column"
+          style={{ width: "75%", textAlign: "left", marginTop: 10 }}
+        >
+          <p>{text}</p>
+          <small style={{ color: "gray" }}>Psted at {formatDate(date)}</small>
+          {showActions && (
+            <div>
+              <button
+                onClick={() => addLike(_id)}
+                type="button"
+                className="btn btn-light"
+              >
+                <i className="fas fa-thumbs-up" />{" "}
+                {likes.length > 0 && <span>{likes.length}</span>}
+              </button>
+              <button
+                onClick={() => removeLike(_id)}
+                type="button"
+                className="btn btn-light"
+              >
+                <i className="fas fa-thumbs-down"></i>
+              </button>
+              <Link to={`/post/${_id}`} className="btn btn-primary">
+                Discussion{" "}
+                {comments.length > 0 && (
+                  <span className="comment-count">{comments.length}</span>
+                )}
+              </Link>
+              {!users.loading && user === users.user._id && (
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => deletePost(_id)}>
+                  <i className="fas fa-trash"></i>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+PostItem.defaultProps = {
+  showActions: true,
+};
+const mapStateToProps = (state) => ({
+  user: state.user,
+  users: state.users,
+});
+
+export default connect(mapStateToProps, { addLike, removeLike, deletePost })(
+  PostItem
+);
